@@ -1,0 +1,104 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action">
+		<span class="add" onclick="$(this).popup({title:'新建轮播图片',width:1000,height:700,url:'{{$__ROOT__}}/homeImg/add'});"></span>
+		<span class="line"></span>
+		<span class="del" onclick="mm.ajaxDelete({url: 'homeImg/del'},mm.confirm,1);"></span>
+	</div>
+	<div class="ku_cell fillter">
+		<form class="ssearch" action="homeImg" id="homeImg_search_form" name="homeImg_search_form"  onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<input class="text" type="text" name="s_n_name" value="{{$s_n_name}}" placeholder="请输入图片描述进行筛选" / >
+			<em class="more">▼</em>
+			<button type="submit"  id="s_subbtn">筛选</button>
+		</form>
+		<form class="drop_down" action="homeImg" name="search_form" id="search_form" onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<dl>
+				<dd>
+                    <h2 style="clear:both; line-height:26px; float:left;">平台：</h2>
+                    <select name="web_type">
+			            <option value="0" {{if $web_type==0}} selected {{/if}} >全部</option>
+			            <option value="1" {{if $web_type==1}} selected {{/if}} >PC</option>
+			            <!-- <option value="2" {{if $web_type==2}} selected {{/if}} >手机</option> -->			            
+			        </select>
+               </dd>
+               <dd>
+                    <h2 style="clear:both; line-height:26px; float:left;">状态：</h2>
+                    <select name="status">
+			            <option value="2" {{if $status==2}} selected {{/if}} >全部</option>
+			            <option value="1" {{if $status==1}} selected {{/if}} >有效</option>
+			            <option value="0" {{if $status==0}} selected {{/if}} >无效</option>			            
+			        </select>
+               </dd>
+				<dt>
+					<button type="submit" id="s_a_subbtn">筛选</button><button type="button" class="showall">清除</button>
+				</dt>
+			</dl>
+		</form>
+	</div>
+</div>
+<div class="a_thbar" style="right: 251px;">
+	<table>
+		<tr>
+			<th class="cboxlie"><span class="checkbox"></span></th>
+			<th>图片描述</th>
+			<th>平台</th>
+			<th>缩略图</th>
+			<th width="150">轮播序号</th>
+			<th width="136">状态</th>
+			<th>转到官网</th>
+			<th width="92">操作</th>
+		</tr>
+	</table>
+</div>
+<div class="a_content" style="margin-right: 251px;">
+	<table class="b_table">
+		{{if $list}}
+		{{foreach from=$list item=v}}
+		<tr {{if $v.bg_type!=1}} kid="{{$v.id}}" {{/if}} origin="{{$__ROOT__}}/homeImg/infos?id={{$v.id}}">
+			<td class="cboxlie"><span class="checkbox"></span></td>
+			<td>{{$v.img_desc}}</td>
+			<td>{{if $v.web_type==1}}PC{{else}}手机{{/if}}</td>
+			<td>
+				{{if $v.bg_type!=1}}
+				<a onclick="$(this).popup({width:1150,height:700, url:'{{$__ROOT__}}/homeImg/showPic?pic_url={{$v.background}}&outlook_img={{$v.outlook_img}}' });">
+					<img src="{{$v.background}}" width="100" height="15" alt="点击查看原图">
+				</a>
+				{{else}}无图片{{/if}}
+			</td>
+			
+			<td width="150">{{$v.img_order}}</td>
+			<td width="136">{{if $v.status==1}}有效{{else}}无效{{/if}}</td>
+			<td>{{if $v.status==1}}<a href="{{if $v.web_type==1}}{{$official_site_url_pc}}{{else}}{{$official_site_url_mobile}}{{/if}}" target='_blank'>查看</a>{{else}}查看{{/if}}</td>
+			<td width="92">
+				<div class="saction ku_fix">
+					<button onclick="$(this).popup({title:'修改轮播图片',width:1000,height:700,url:'{{$__ROOT__}}/homeImg/edit?id={{$v.id}}'});">修改</button>
+					<button class="more"></button>
+					{{if $v.bg_type!=1}}					
+					<dl class="maction">
+						<dd onclick="mm.ajaxDelete({url: 'homeImg/del', kid: '{{$v.id}}'},mm.confirm);">删除</dd>
+					</dl>
+					{{/if}}
+				</div>
+			</td>
+		</tr>
+		{{/foreach}}
+		{{else}}
+		<tr>
+			<td colspan="6">暂无数据！</td>
+		</tr>
+		{{/if}}
+	</table>
+</div>
+<div class="a_detailbar"></div>
+
+<script>
+	(function($, mm) {
+		mm.confirm = function(args) {
+			var one = !args ? '该' : '所选';
+			return confirm('您确定要删除' + one + '首页图片吗？');
+		}
+	})($, mm);
+	
+</script>

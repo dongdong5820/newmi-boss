@@ -1,0 +1,108 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action">
+	</div>
+    <div class="ku_cell fillter">
+        <form class="ssearch" action="log" onsubmit="mm.ajaxFilter({formId: this});return false;">
+            <input class="text" class="text" type="text" name="s_search_key" value="{{$filter.s_search_key}}" placeholder="请输入日志标题，操作用户搜索" / >
+            <em class="more"></em>
+            <button type="submit">搜索</button>
+        </form>
+        <form class="drop_down" action="log" onsubmit="mm.ajaxFilter({formId: this});">
+            <dl>
+                <dd>
+                    <h2>月份选择</h2>
+                    <select name="partition_table">
+			            {{foreach $log_time_partition_list as $v}}
+			                <option value="{{$v.partition_table}}" {{if $filter.partition_table==$v.partition_table}}SELECTED{{/if}}>{{$v.partition_title}}</option>
+			            {{/foreach}}
+		        	</select>
+		        </dd>
+		        <dd>
+		        	<h2>日志分类</h2>
+                    <select name="log_cate_id">
+                        <option value="">--请选择--</option>
+			            {{foreach $log_cate_list as $v}}
+			                <option value="{{$v.log_cate_id}}" {{if $filter.log_cate_id==$v.log_cate_id}}SELECTED{{/if}}>{{$v.cate_name}}</option>
+			            {{/foreach}}
+		        	</select>
+		        </dd>
+		        <dd>
+		        	<h2>操作类型</h2>
+                    <select name="log_oper_type_id">
+                    	<option value="">--请选择--</option>
+			            {{foreach $log_oper_type_list as $v}}
+			                <option value="{{$v.log_oper_type_id}}" {{if $filter.log_oper_type_id==$v.log_oper_type_id}}SELECTED{{/if}}>{{$v.type_name}}</option>
+			            {{/foreach}}
+		        	</select>
+		        </dd>
+		        <dd>
+		        	<h2>操作用户</h2>
+                    <select name="oper_user_id">
+                    	<option value="">--请选择--</option>
+			            {{foreach $adm_users_list as $v}}
+			                <option value="{{$v.user_id}}" {{if $filter.oper_user_id==$v.user_id}}SELECTED{{/if}}>{{$v.user_realname}}({{$v.user_name}})</option>
+			            {{/foreach}}
+		        	</select>
+		        </dd>
+		        <dd>
+		        	<h2>日志标题</h2>
+		        	<input name="log_title" value="{{$filter.log_title}}" type="text" class="text" />
+		        </dd>
+		        <dd>
+		        	<h2>日志内容</h2>
+		        	<input name="log_content" value="{{$filter.log_content}}" type="text" class="text" />
+		        </dd>
+		        <dd>
+		        	<h2>操作IP</h2>
+		        	<input name="log_ip" value="{{$filter.log_ip}}" type="text" class="text" />
+		        </dd>
+		        <dd>
+		        	<h2>时间</h2>
+		        	<input name="log_time_start" value="{{$filter.log_time_start}}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="text" />
+		        </dd>
+		        <dd>
+		        	<h2>至</h2>
+		        	<input name="log_time_end" value="{{$filter.log_time_end}}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="text" />
+                </dd>
+                <dt><button type="submit">搜索</button><button type="button" class="showall">清除</button></dt>
+            </dl>
+        </form>
+	</div>
+</div>
+<div class="a_thbar right">
+	<table>
+		<tr>
+			<th class="cboxlie"><span class="checkbox"></span></th>
+			<th>日志标题</th>
+			<th>日志分类</th>
+			<th>操作类型</th>
+			<th>操作用户</th>
+			<th>操作时间</th>
+		</tr>
+	</table>
+</div>
+<div class="a_content right">
+	<table class="b_table">
+		{{if $log_list}}
+		{{foreach $log_list as $v}}
+		<tr kid="{{$v.log_id}}" origin="{{$__ROOT__}}/log/infos?log_id={{$v.log_id}}&partition_table={{$filter.partition_table}}">
+			<td class="cboxlie"><span class="checkbox"></span></td>
+			<td>{{$v.log_title}}</td>
+			<td>{{$v.cate_name}}</td>
+			<td>{{$v.type_name}}</td>
+			<td>{{$v.oper_user_realname}}({{$v.oper_user_name}})</td>
+			<td>{{$v.log_time}}</td>
+		</tr>
+		{{/foreach}}
+		{{/if}}
+	</table>
+</div>
+<div class="a_detailbar">
+	<div class="dcon">
+			
+	</div>
+</div>
+

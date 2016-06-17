@@ -1,0 +1,464 @@
+<form class="a_fill" method="post" action="{{$__URL__}}/add" onsubmit="mm.ajaxPost({formId: this}, mm.check);" enctype="multipart/form-data" >
+	<div class="fitem">
+		<div class="ftitle">平台<span class="bi">*</span></div>
+		<div class="ku_fix">
+			<label><input type="radio" value="1" name="paas" checked/><span>PC</span></label>
+			<label style="display:none;"><input type="radio" value="2" name="paas" /><span>手机</span></label>
+		</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">图片描述</div>
+		<input type="text" class="text" name="img_desc" size="30" value=""  />
+
+		<div class="fsay">（仅显示在米控后台）</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">背景图<span class="bi">*</span></div>
+		<input type="file" id="bg_img" name="bg_img" class="file" onchange ="previewFile($(this), 'image/jpeg', 1920, 1080, 640, 1136);"/>
+		<div class="fsay" id="bg_text">（尺寸：1920×1080像素；jpg格式）</div>
+		<div class="edit">
+			<img id="bgImg_show" style="max-width: 300px; max-height:150px;" src="" alt="">
+		</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">前景图</div>
+		<input type="file" class="file" name="outlook_img" id="outlook_img" onchange ="previewFile($(this),'image/png', 1200, 500, 600, 560);"/>
+		<div class="fsay" id="outlook_text">（尺寸：不大于1200 × 500像素；png格式；用于显示文字和按钮，居中显示在背景图上）</div>
+		<div class="edit">
+			<img id="outlookImg_show" style="max-width: 300px; max-height:150px;" src="" alt="">
+		</div>
+		<input type="hidden" name ="pc_prepic_width" value=""/>
+		<input type="hidden" name ="mb_prepic_width" value=""/>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">背景色<span class="bi">*</span></div>
+		<input type="hidden" class="text" name="backgroundColor" id="backgroundColor" size="30" style="width:60px;" value="#000000" />
+		&nbsp;<input type="color" class="text" name="background_color" id="background_color" style="width:30px"/> 
+		<div id="btn" style="color:#000; margin-top:-36px; position:absolute; width:60px; height:28px; border-radius: 5px; background:#CCC;-webkit-box-shadow: 3px 3px 6px #999; -moz-box-shadow: 3px 3px 6px #999;box-shadow: 3px 3px 6px #999;padding-top:5px; ">
+        	<div id="bg_color" style="width:45px; height:23px; margin:auto; background:#000; ">&nbsp;</div>
+        </div>
+		<div class="fsay">（背景颜色要求接近背景图边缘色）</div>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">链接地址</div>
+		<div class="alink">
+			<a href="javascript:void(0);" onclick="addLink();">+设置链接</a>
+			<div class="linklist"></div>
+			<div class="setlink">
+				<div class="imgset">
+					<img class="t1" src="" alt="">
+					<div class="preimg">
+						<img class="t2" src="" alt="">
+						<div class="contextmenu">添加链接</div>
+					</div>
+				</div>
+				<div class="btn">
+					<button type="button" class="complete">确认</button>
+					<button type="button" class="undo" onclick="$(this).parent().parent().hide();">取消</button>
+				</div>
+			</div>
+		
+			<div class="preview_page">
+				<div class="imglist">
+					<img class="t1" src="" alt="">
+					<div class="viewimg">
+						<img class="t2" src="" alt="">
+					</div>
+				</div>
+				<div class="vclose" id="vclose">×</div>
+			</div>
+		</div>
+	</div>	
+	<div class="fitem">
+		<div class="ftitle">轮播序号<span class="bi">*</span></div>
+		<input type="text" id="order_num" name="img_order" class="text" size="30" style="width:60px;" onblur="if(/[^0123456789]/g.test(value))value=value.replace(/[^0123456789]/g,'');" onkeyup="if(/[^0123456789]/g.test(value))value=value.replace(/[^0123456789]/g,'');"/>
+		<div class="fsay">（输入正整数；序号小的轮播顺序在前）</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">状态<span class="bi">*</span></div>
+		<div class="ku_fix">
+			<label><input name="is_show" type="radio" value="1" /><span>有效</span></label>
+			<label><input name="is_show" type="radio" value="0" checked /><span>无效</span></label>
+		</div>
+	</div>
+	<div class="fline"></div>
+	<div class="fsub">
+		<button type="submit" id="btnSubmit">保存</button>
+		<button type="button" style="margin-left:20px;" id="btnview">预览</button>
+	</div>
+</form>
+<script type="text/javascript">
+(function($, mm) {
+	mm.check = function() {
+		var bg_img=$("#bg_img").val();
+		if($.trim(bg_img)==''){
+			tooltip.tip('error', "请上传背景图片！");
+			return false;
+		}
+		var order_num=$("#order_num").val();
+		if(order_num==''){
+			tooltip.tip('error', "请输入轮播序号！");
+			return false;
+		}else if(order_num==0){
+			tooltip.tip('error', "请输入有效的正整数！");
+			return false;
+		}
+		var backgroundColor = $("#backgroundColor").val();
+		if(backgroundColor==''){
+			tooltip.tip('error', "请选择背景色！");
+			return false;
+		}
+		if(isNaN(order_num)){
+			tooltip.tip('error', "轮播序号格式不对！");
+			return false;
+		}
+		var outlook_img = $("#outlook_img").val();
+        if(outlook_img == ""){  
+            $("#outlook_img").attr("name","");
+        }
+	}	
+})($, mm);
+
+
+var fileType = 'image/png',
+	fileSize = 0,
+	completeDom = $('.complete'),
+	linkListDom = $('.linklist');	
+function previewFile(el, type, width, height, mbwidth, mbheight) {
+	var file = el[0].files[0];
+	var reader = new FileReader();
+	var img = el.next().next().children();
+	var imgsetDom = $('.imgset');
+	var imglistDome = $('.imglist');
+	
+	var radios = document.getElementsByName("paas");
+	var tag = false;
+	var val;
+	for(radio in radios) {
+	   if(radios[radio].checked) {
+	      tag = true;
+	      val = radios[radio].value;
+	      break;
+	   }
+	}	
+	reader.onloadend = function () {		
+		img.attr('src',reader.result);
+		if(val=='1'){
+			if(width == 1920){
+				if(width != img[0].naturalWidth || height != img[0].naturalHeight){
+					tooltip.tip('error', '图片尺寸不符合要求，请选择尺寸为'+width+'×'+height+'像素的图片！');
+					img.removeAttr('src');
+					$("#bg_img").val("");
+				}
+				imgsetDom.removeClass('mob');
+				imglistDome.removeClass('mob');
+			}else{
+				$('input[name = "pc_prepic_width"]').val(img[0].naturalWidth);
+				if(width < img[0].naturalWidth || height < img[0].naturalHeight){
+					tooltip.tip('error', '图片尺寸不符合要求，请选择尺寸不大于'+width+'×'+height+'像素的图片！');
+					img.removeAttr('src');
+				}else {
+					clearLink();
+				}
+			}	
+		}else{
+			if(mbwidth == 640){
+				if(mbwidth != img[0].naturalWidth || mbheight != img[0].naturalHeight){
+					tooltip.tip('error', '图片尺寸不符合要求，请选择尺寸为'+mbwidth+'×'+mbheight+'像素的图片！');
+					img.removeAttr('src');
+					$("#bg_img").val("");
+				}
+				imgsetDom.addClass('mob');
+				imglistDome.addClass('mob');
+			}else{
+				$('input[name = "mb_prepic_width"]').val(img[0].naturalWidth);
+				if(mbwidth < img[0].naturalWidth || mbheight < img[0].naturalHeight){
+					tooltip.tip('error', '图片尺寸不符合要求，请选择尺寸不大于'+mbwidth+'×'+mbheight+'像素的图片！');
+					img.removeAttr('src');
+				}else {
+					clearLink();
+				}
+			}
+		}
+		
+	};
+	if (file) {
+		fileType = file.type;
+		if(fileType != type){
+			tooltip.tip('error', '图片格式不符合要求，请选择格式为 ' + ((type == 'image/png') ? 'png' : 'jpg,jpeg') + ' 的文件！');
+			$("#bg_img").val("");
+			return;
+		}
+		/*fileSize = file.size;*/
+		reader.readAsDataURL(file);
+	} else {
+		img.removeAttr('src');
+	}
+}
+
+/**
+ * 清除前景图和已设置的链接
+ */
+function clearLink(){
+	var setlink = $('.setlink'),
+		img = setlink.find('img').eq(1),
+		drag = setlink.find('.drag');
+	img.removeAttr('src');
+	drag.remove();
+	linkListDom.empty();
+}
+
+function addLink(){
+	var setlink = $('.setlink'),
+		img = setlink.find('img'),
+		editImg =$('.edit').children('img'),
+		width = editImg[1].naturalWidth,
+		height = editImg[1].naturalHeight;
+	if(editImg.attr('src') == ''){
+		setlink.css('display','none');
+		tooltip.tip('error', '请先上传图片！');
+		img.removeAttr('src');
+	}else{
+		setlink.css('display','block');
+		img.eq(0).attr('src', editImg.eq(0).attr('src'));
+		img.eq(1).attr('src', editImg.eq(1).attr('src'));
+		$('.preimg').css({'margin-top':-(height/2)+'px','margin-left':-(width/2)+'px'});
+	}
+}
+
+function viewPage(){
+	var viewpageDom = $('.preview_page'),
+		img = viewpageDom.find('img'),
+		editImg =$('.edit').children('img'),
+		width = editImg[1].naturalWidth,
+		height = editImg[1].naturalHeight;
+	if(editImg.attr('src') == ''){
+		viewpageDom.css('display','none');
+		tooltip.tip('error', '请先上传图片！');
+		img.removeAttr('src');
+	}else{
+		viewpageDom.css('display','block');
+		img.eq(0).attr('src', editImg.eq(0).attr('src'));
+		img.eq(1).attr('src', editImg.eq(1).attr('src'));
+		$('.viewimg').css({'margin-top':-(height/2)+'px','margin-left':-(width/2)+'px'});
+	}
+}
+var contextmenuDom = $('.contextmenu');
+var editDom = $('.preimg');
+var isResizing = 0;
+
+/**
+ * 根据鼠标位置，创建输入框
+ * @param  {float} x 鼠标X轴
+ * @param  {float} Y 鼠标Y轴
+ */
+function draw(x, y) {
+	var dragDom = $('<div class="drag" style="display:block;position:absolute;width:100px;height:30px;">').appendTo(editDom);
+	dragDom.css({'top': y, 'left': x});
+	var resizeDom = $('<div class="resize">').appendTo(dragDom);
+	var closeDom = $('<div class="close">×</div>').appendTo(dragDom);
+	var linkParamsDom = $('<div class="params">').appendTo(dragDom);
+	var linkDom = $('<label>链接：<span><input type="text" value="" /></span></label>').appendTo(linkParamsDom);
+	drag(dragDom);
+	resize(dragDom, resizeDom);
+	linkParamsDom.mousemove(function(e) {
+		e.stopPropagation();
+	});
+	linkParamsDom.contextmenu(function(e) {
+		e.stopPropagation();
+	});
+	closeDom.click(function(e) {
+		dragDom.hide();
+	});
+}
+
+/**
+ * 拖动输入框
+ * @param  {element} el 拖动的元素
+ */
+function drag(el) {
+	var isMouseDown = 0;
+	var dX = 0, dY = 0, dTop = 0, dLeft = 0, parentOffset, parentWidth, parentHeight;
+	el.mousedown(function(e) {
+		isMouseDown = 1;
+		var offset = $(this).offset(),
+			wrap = $(this).parent();
+		parentWidth = wrap.width();
+		parentHeight = wrap.height();
+		parentOffset = wrap.offset();
+		dX = e.pageX - parentOffset.left;
+		dY = e.pageY - parentOffset.top;
+		dTop = parseInt($(this).css('top')) || 0;
+		dLeft = parseInt($(this).css('left')) || 0;
+	});
+	$(document).mousemove(function(e) {
+		if(!isMouseDown || isResizing) return;
+		var offset = el.offset(),
+			offsetLeft = e.pageX - parentOffset.left,
+			offsetTop = e.pageY - parentOffset.top,
+			top = dTop + offsetTop - dY,
+			left = dLeft + offsetLeft - dX,
+			maxTop = parentHeight - el.height(),
+			maxLeft = parentWidth - el.width();
+
+		top = top < 0 ? 0 : (top > maxTop ? maxTop : top);
+		left = left < 0 ? 0 : (left > maxLeft ? maxLeft : left);
+		el.css({'top': top, 'left': left});
+	}).mouseup(function(e) {
+		if(!isMouseDown) return;
+		isMouseDown = 0;
+	});
+}
+/**
+ * 调整元素大小
+ * @param  {element} drag 需要调整的元素
+ * @param  {element} el 
+ */
+function resize(drag, el) {
+	var isMouseDown = 0;
+	var dX = 0, dY = 0, dH = 0, dW = 0;
+	el.mousedown(function(e) {
+		isMouseDown = 1;
+		var offset = $(this).offset(),
+			parentOffset = $(this).parent().offset();
+		dX = e.pageX - parentOffset.left;
+		dY = e.pageY - parentOffset.top;
+		dW = parseInt(drag.css('width')) || 0;
+		dH = parseInt(drag.css('height')) || 0;
+	});
+	$(document).mousemove(function(e) {
+		if(!isMouseDown) return;
+		isResizing = 1;
+		var offset = el.offset(),
+			parentOffset = el.parent().offset(),
+			left = e.pageX - parentOffset.left,
+			top = e.pageY - parentOffset.top,
+			itsHeight = dH + top - dY,
+			itsWidth = dW + left - dX,
+			perHeight = drag.parent().height(),
+			perWidth = drag.parent().width();
+
+		itsHeight = itsHeight < perHeight ? itsHeight: perHeight;
+		itsWidth = itsWidth < perWidth ? itsWidth: perWidth;
+		drag.css({'height':itsHeight , 'width':itsWidth });
+	}).mouseup(function(e) {
+		if(!isMouseDown) return;
+		isMouseDown = 0;
+		isResizing = 0;
+	});
+}
+
+contextmenuDom.click(function(e) {
+	$(this).removeClass('open');
+	draw(initX, initY);
+});
+
+var linkInfoList = []; 
+/**
+ * 获取设置的链接的属性
+ * @return {array} 设置的链接的属性数组
+ */
+function getLink() {
+	var d = editDom.find('.drag');
+	linkInfoList.length = 0;
+	d.each(function() {
+		var style = $(this).attr('style'),
+			link = $(this).find('input').eq(0).val(),
+			width = ($(this).width() / editDom.width() * 100) + '%',
+			height = ($(this).height() / editDom.height() * 100) + '%',
+			top = (parseInt($(this).css('top')) / editDom.height() * 100) + '%',
+			left = (parseInt($(this).css('left')) / editDom.width() * 100) + '%';
+		linkInfoList.push({link: link,width:width,height:height,top:top,left:left});
+	});
+	return linkInfoList;
+}
+
+var imgWidth = 0,
+	imgHeight = 0;
+editDom.contextmenu(function(e) {
+	var offset = $(this).offset();
+	initY = e.pageY - offset.top;
+	initX = e.pageX - offset.left;
+	contextmenuDom.css({'top': initY, 'left': initX}).addClass('open');
+	e.preventDefault();
+	if($('.drag:visible').length>=2){
+		tooltip.tip('error', "链接设置最多只能设置两个！");
+		contextmenuDom.removeClass('open');
+		return false;
+	}
+});
+
+var setlink = $('.setlink'),
+	preimgDom = $('.preimg'),
+	unDo = $('.undo'),
+	dragHidden;
+completeDom.click(function(){
+	dragHidden = setlink.find('.drag:hidden');
+	dragHidden.remove();
+	var linkList = getLink();
+	var linkHtml = '';
+	var linkStr = '';
+	var linkVal = '';
+	var linkIput = '';
+	for(var i=0;i<linkList.length;i++){
+		linkHtml += '<p>' + linkList[i].link + '</p>';
+		linkVal = (linkList[i].link != '' ? linkList[i].link : '#')+',width:'+linkList[i].width+';height:'+linkList[i].height+';top:'+linkList[i].top+';left:'+linkList[i].left;
+		linkIput += '<input type="hidden" name="link_url[]" value="'+linkVal+'"/>'
+	}
+	linkListDom.html(linkHtml);
+	$('.alink').append(linkIput);
+	setlink.hide();
+});
+
+unDo.click(function(){
+	dragHidden = setlink.find('.drag:hidden');
+	dragHidden.show();
+	$('.drag').each(function(idx) {if(idx == 0 || idx == 1) return; $(this).remove();});
+});
+
+
+/*
+预览
+ */
+$('#btnview').click(function(){
+	viewPage();
+	var viewimgDom = $('.viewimg'),
+	img = viewimgDom.find('img'),
+	pos = linkInfoList,
+	viewLink = '';
+	setlink.hide();
+	for(var i = 0;i<pos.length;i++){
+		viewLink += '<a target="_blank" href=' + pos[i].link + ' style ="position:absolute; display:block; top:'+pos[i].top+';left:'+pos[i].left+';width:'+pos[i].width+';height:'+pos[i].height+';"></a>';
+	}
+	var newViewLink = $(viewLink).appendTo(viewimgDom);
+	$('#vclose').click(function(){
+		$(this).parent().hide();
+		newViewLink.remove();
+	})
+});
+document.getElementById('btn').onclick = function(){
+    document.getElementById('background_color').click();
+    
+};
+$(function(){
+	$("input[name='paas']").click(function(){
+		if($(this).val()==2){
+			$("#bg_text").text("（尺寸：640×1136像素；jpg格式）");
+			$("#outlook_text").text("（尺寸：不大于600×560像素；png格式；用于显示文字和按钮，居中显示在背景图上）");
+			linkListDom.find('p').remove();
+		}else{
+			$("#bg_text").text("（尺寸：1920×1080像素；jpg格式）");
+			$("#outlook_text").text("（尺寸：不大于1200 × 500像素；png格式；用于显示文字和按钮，居中显示在背景图上）");
+		}
+		$("#bg_img").val("");
+		$("#outlook_img").val("");
+		$("#bgImg_show").attr("src","");
+		$("#outlookImg_show").attr("src","");
+	});
+	$("#background_color").change(function(){
+		$("#backgroundColor").val(this.value);
+		$("#bg_color").css("background",this.value);
+		$("#backgroundColor").css("border",this.value+" 3px solid");
+	});
+})
+</script>

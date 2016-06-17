@@ -1,0 +1,71 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action">
+		<span class="add" onclick="$(this).popup({title:'添加城市',width:1000,height:700,url:'{{$__ROOT__}}/applywificity/add'});"></span>
+		<span class="line"></span>
+		<span class="del" onclick="mm.ajaxDelete({url: 'applywificity/del'},mm.confirm,1);"></span>
+	</div>
+	<div class="ku_cell fillter">
+		<form class="ssearch" action="applywificity" id="applywificity_search_form" name="applywificity_search_form"  onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<input class="text" type="text" name="s_n_name" value="{{$s_n_name}}"  placeholder="请输入城市名称进行筛选" / >
+			<em class="more">▼</em>
+			<button type="submit"  id="s_subbtn">筛选</button>
+		</form>
+		<form class="drop_down" action="applywificity" name="city_search_form" id="city_search_form" onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<dl>
+                <dd>
+                    <h2>省份：</h2>
+                    <select name="sc_pid">
+			            <option value="0">--默认为省份--</option>
+			            {{if $spls}}
+			            {{foreach from=$spls item=v}}
+			                <option value="{{$v.id}}">{{$v.city_name}}</option>
+			            {{/foreach}}
+			            {{/if}}
+			        </select>
+               </dd>
+                <dt>
+                    <button type="submit" id="s_subbtn">筛选</button>
+	    		    <button type="button" class="showall">清除</button>
+                </dt>
+            </dl>
+		</form>
+	</div>
+</div>
+<div class="a_thbar">
+	<table>
+		<tr>
+			<th class="cboxlie"><span class="checkbox"></span></th>
+			<th>城市名称</th>
+			<th>覆盖类型</th>
+			<th width="92">操作</th>			
+		</tr>
+	</table>
+</div>
+<div class="a_content">
+	<table class="b_table">
+		{{if $list}}
+		{{foreach from=$list item=v}}
+		<tr kid="{{$v.id}}">
+			<td class="cboxlie"><span class="checkbox"></span></td>
+			<td>{{$v.city_name}}</td>
+			<td>{{$v.city_type}}</td>	
+			<td width="92">
+				<div class="saction ku_fix">
+					<button onclick="$(this).popup({title:'修改城市',width:1000,height:700,url:'{{$__ROOT__}}/applywificity/edit?id={{$v.id}}'});">修改</button>
+					<button class="more"></button>
+					<dl class="maction">
+						<dd onclick="mm.ajaxDelete({url: 'applywificity/del', kid: '{{$v.id}}'},mm.confirm);">删除</dd>
+					</dl>
+				</div>
+			</td>
+		</tr>
+		{{/foreach}}
+		{{/if}}
+	</table>
+</div>
+
+
+<!-- <div class="a_detailbar"></div>  -->

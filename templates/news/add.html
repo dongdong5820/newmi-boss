@@ -1,0 +1,120 @@
+<form class="a_fill" method="post" action="{{$__URL__}}/add" name="add_form" enctype="multipart/form-data"  onsubmit="mm.ajaxPost({formId: this}, mm.check);">
+	<div class="fitem">
+		<div class="ftitle">文章标题<span class="bi">*</span></div>
+		<input  id="news_title" name="news_title" type="text" class="text" size="30"/>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">文章分类<span class="bi">*</span></div>
+		<select id="news_cate_id" name="news_cate_id">
+			<option value=''>--请选择--</option>
+			{{if $cate_list}} 
+			{{foreach from=$cate_list item=v}}
+			<option value='{{$v.news_cate_id}}'>{{$v.news_cate_title}}</option>
+			{{/foreach}}
+			{{/if}}
+		</select>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">文章作者<span class="bi">*</span></div>
+		<input  id="news_author" name="news_author" type="text" class="text" size="30"/>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">来源</div>
+		<input  id="news_source" name="news_source" type="text" class="text" size="30"/>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">文章摘要</div>
+		<textarea cols="80" rows="12" name="digest" id="digest" style="width:706px;"></textarea>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">文章标签<span class="bi">*</span></div>
+		<input  id="news_tag" name="news_tag" type="text" class="text" size="30"/>用于搜索引擎；两个关键字间用","分开，如:材料,家具,办公
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">缩略图<span class="bi">*</span></div>
+		<input  id="show_img" name="show_img" type="file" class="file" onchange="valid_ext(this);"/>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">发表日期<span class="bi">*</span></div>
+		<input  id="news_date" name="news_date" readonly=true onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">文章内容<span class="bi">*</span></div>
+		<textarea  id="news_content" name="news_content" ></textarea>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">是否显示</div>
+		<div class="ku_fix">
+			<label><input name="is_show" type="radio" value="0" /><span>隐藏</span></label>
+			<label><input name="is_show" type="radio" value="1" checked/><span>显示</span></label>
+		</div>
+	</div>
+	<div class="fsub">
+		<button type="submit">保存</button>
+	</div>
+</form>
+<script type="text/javascript">
+(function($, mm) {
+	mm.check = function() {
+		var news_title=$("#news_title").val();
+		if($.trim(news_title)==''){
+			tooltip.tip('error', "文章标题不能为空！");
+			return false;
+		}
+		var news_cate_id=$("#news_cate_id").val();
+		if(news_cate_id==''){
+			tooltip.tip('error', "请选择文章分类！");
+			return false;
+		}
+		var news_author=$("#news_author").val();
+		if(news_author==''){
+			tooltip.tip('error', "请输入文章作者！");
+			return false;
+		}
+		var news_tag=$("#news_tag").val();
+		if(news_tag==''){
+			tooltip.tip('error', "请输入文章标签！");
+			return false;
+		}
+		var show_img=$("#show_img").val();
+		if(show_img==''){
+			tooltip.tip('error', "请上传文章缩略图！");
+			return false;
+		}
+		var news_date=$("#news_date").val();
+		if(news_date==''){
+			tooltip.tip('error', "请填写发表日期！");
+			return false;
+		}
+		var news_content=editor_obj_news_content.html();
+		$("#news_content").val(news_content);
+		var news_content=$("#news_content").val();
+		if(news_content==''){
+			tooltip.tip('error', "请输入文章内容！");
+			return false;
+		}
+	}
+})($, mm);
+function valid_ext(obj){
+	var str = obj.value;
+	if(str == '') return false ;
+	var ext=str.substring(str.lastIndexOf('.')).toLowerCase();
+	console.info(ext);
+	var fileext=new Array(".png",".jpg",".bmp",".jpeg");
+	if(fileext.indexOf(ext) < 0 ){
+		tooltip.tip('error', '图片格式不符合要求，请选择格式为 png,jpg,bmp,jpeg 的文件！');
+		obj.value = "";
+		return false;
+	}
+	var img = new Image();
+	img.src = str;
+	var image_size = img.fileSize;
+	if(image_size > 500*1024){
+		tooltip.tip('error', '图片大小不符合要求，请选择大小不超过 500KB 的文件！');
+		obj.value = "";
+		return false;
+	}
+	return true;
+}
+</script>
+{{$editor}}

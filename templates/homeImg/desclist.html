@@ -1,0 +1,24 @@
+<div class="a_thbar" style="right: 251px;">
+	<table>
+		<tr>
+			<th>序号</th>
+			<th>图片描述</th>			
+		</tr>
+	</table>
+</div>
+<div class="a_content" style="min-height: 360px; padding: 0;">
+	<table class="b_table">
+		{{if $ls}}
+		{{foreach from=$ls item=v}}
+		<tr>
+			<td>{{$v.num}}</td>
+			<td>{{$v.img_desc}}</td>			
+		</tr>
+		{{/foreach}}
+		{{else}}
+		<tr>
+			<td colspan="2">暂无数据！</td>
+		</tr>
+		{{/if}}
+	</table>
+</div>

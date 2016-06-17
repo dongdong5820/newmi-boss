@@ -1,0 +1,28 @@
+<form class="a_fill" method="post" action="{{$__URL__}}/edit" onsubmit="mm.ajaxPost({formId:this},mm.check);">
+    <div class="fitem">
+		<div class="ftitle">状态<span class="bi">*</span></div>
+		<label><input type="radio" name="status" value="1"{{if $info.aStatus}} checked="checked"{{/if}}>&nbsp;有效</label>&nbsp;&nbsp;
+		<label><input type="radio" name="status" value="0"{{if !$info.aStatus}} checked="checked"{{/if}}>&nbsp;无效</label>
+	</div>
+    <div class="fitem">
+		<div class="ftitle">推荐<span class="bi">*</span></div>
+		{{html_checkboxes name="recm" checked=$info.aMSHRecommend options=$recms separator="&nbsp;"}}
+	</div>
+	<div class="fitem">
+		<div class="ftitle">首页推荐<span class="bi">*</span></div>
+		<label><input type="radio" name="hotOffers" value="1"{{if $info.hotOffers==1}} checked="checked"{{/if}}>&nbsp;大图推荐   &nbsp; </label> &nbsp;&nbsp;
+		<label> <input type="radio" name="hotOffers" value="2"{{if $info.hotOffers==2}} checked="checked"{{/if}}>&nbsp;热门推荐   &nbsp; </label> &nbsp;&nbsp;
+		<label><input type="radio" name="hotOffers" value="0"{{if $info.hotOffers==0}} checked="checked"{{/if}}>&nbsp; 不推荐   &nbsp; </label>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">新闻预览</div>
+		<label><a href="{{$news_url}}article{{if $info.at_id==0}}/{{$info.sc_id}}{{/if}}/{{$info.a_id}}.html" target='_blank'>{{$news_url}}article{{if $info.at_id==0}}/{{$info.sc_id}}{{/if}}/{{$info.a_id}}.html</a></label>
+	</div>
+    <div class="fline"></div>
+	<div class="fsub">
+		<input name="at_id" type="hidden" value="{{$info.at_id}}" />
+		<input name="sc_id" type="hidden" value="{{$info.sc_id}}" />
+		<input name="aid" type="hidden" value="{{$info.a_id}}"/>
+		<button type="submit">保存</button>
+	</div>
+</form>

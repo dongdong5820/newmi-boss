@@ -1,0 +1,25 @@
+<form class="a_fill" method="post" action="{{$__ROOT__}}/logcate/edit?log_cate_id={{$log_cate_id}}" onsubmit="mm.ajaxPost({formId: this}, mm.check);">
+	<div class="fitem">
+		<div class="ftitle">分类名称</div>
+		<input class="text" name="cate_name" type="text" size="30" value="{{$cate_name}}"/>
+	</div>
+	<div class="fitem" linkage="true">
+		<div class="ftitle">分类编号</div>
+		<div class="ftext">{{$cate_no}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">分类说明</div>
+		<textarea cols="40" rows="5" name="cate_desc">{{$cate_desc}}</textarea>
+	</div>
+	<div class="fline"></div>
+	<div class="fsub">
+    	<button type="submit">保存</button>
+	</div>
+</form>
+<script>
+	(function($, mm) {
+		mm.check = function() {
+			return true;
+		}
+	})($, mm);
+</script>

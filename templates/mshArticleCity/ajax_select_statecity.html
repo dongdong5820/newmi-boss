@@ -1,0 +1,14 @@
+{{if $isTerritory}}
+<input type="hidden" name="sc_id" value="0">
+{{else}}
+<span linksel="true">
+<select name="sc_id" style="width:180px;">
+	<option value="">--请选择--</option>
+	{{if $sc_list}}
+	{{foreach from=$sc_list item=v}}
+	<option value="{{$v.sc_id}}">{{$v.sc_name}}</option>
+	{{/foreach}}
+	{{/if}}
+</select>
+</span>
+{{/if}}

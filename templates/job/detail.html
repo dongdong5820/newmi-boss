@@ -1,0 +1,45 @@
+<div class="a_fill">
+	<div class="fitem">
+		<div class="ftitle">职位名称</div>
+		<div class="ftext">{{$info.job_name}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">职位分类</div>
+		<div class="ftext">{{$info.job_type_name}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">职位描述</div>
+		<div class="ftext">{{$info.job_desc|unescape:"html"}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">投递邮箱</div>
+		<div class="ftext">{{$info.job_email}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">是否热门</div>
+		<div class="ftext">{{if $info.job_hot eq '1'}}热门{{else}}普通{{/if}}</div>
+	</div>	
+	<div class="fitem">
+		<div class="ftitle">显示排序</div>
+		<div class="ftext">{{$info.job_order}}</div>
+	</div>	
+	<div class="fitem">
+		<div class="ftitle">是否状态</div>
+		<div class="ftext">{{if $info.job_status eq '1'}}显示{{else}}隐藏{{/if}}</div>
+	</div>	
+	
+	<div class="fitem">
+		<div class="ftitle">添加时间</div>
+		<div class="ftext">{{$info.job_crttime}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">修改时间</div>
+		<div class="ftext">{{$info.job_uptime}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">添加人</div>
+		<div class="ftext">{{$info.job_crtby_name}}</div>
+	</div>	
+	<div class="fline"></div>
+</div>
+

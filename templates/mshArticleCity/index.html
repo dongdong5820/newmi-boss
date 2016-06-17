@@ -1,0 +1,81 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action">
+		<span class="add" onclick="$(this).popup({title:'添加城市',width:1000,height:700,url:'{{$__URL__}}/add'});"></span>
+		<span class="line"></span>
+		<span class="del" onclick="mm.ajaxDelete({url:'{{$__URL__}}/del'},mm.confirm);"></span>
+	</div>
+	
+    <div class="ku_cell fillter">
+        <form class="ssearch" action="mshArticleCity" onsubmit="mm.ajaxFilter({formId: this});return false;">
+            <input class="text" type="text" name="s_search_key" value="{{$s_search_key}}"  placeholder="请输入城市进行搜索" / >
+            <em class="more">▼</em>
+	        <button type="submit">搜索</button>
+		</form>
+        <div class="drop_down">
+            <form action="mshArticleCity" onsubmit="mm.ajaxFilter({formId:this});return false;">
+                <dl>
+                    <dd>
+                        <span>状态：</span>
+						<select name="s_status">
+							<option value="">全部</option>
+							<option value="0"{{if $s_status=='0'}}selected="selected"{{/if}}>无效</option>
+							<option value="1"{{if $s_status=='1'}}selected="selected"{{/if}}>有效</option>
+						</select>
+                    </dd>
+                    <dt>
+                    	<button type="submit">搜索</button>
+        				<button type="button" class="showall">清除</button>
+                    </dt>
+                </dl>
+            </form>
+        </div>
+	</div>
+</div>
+<div class="a_thbar right">
+	<table>
+		<tr>
+			<th class="cboxlie"><span class="checkbox"></span></th>
+			<th>城市</th>
+			<!--<th>城市名</th>-->
+			<th>是否省会</th>
+			<th>状态</th>
+			<th width="92">操作</th>
+		</tr>
+	</table>
+</div>
+<div class="a_content right">
+	<table class="b_table">
+		{{if $list}}
+		{{foreach from=$list item=v}}
+		<tr kid="{{$v.ac_id}}">
+			<td class="cboxlie"><span class="checkbox"></span></td>
+			<td>{{$v.city}}</td>
+			<!--<td>{{$v.acName}}</td>-->
+			<td>{{if $v.acIsCapital}}是{{else}}否{{/if}}</td>
+			<td>{{$v.status}}</td>
+			<td width="92">
+				<div class="saction ku_fix">
+					<button onclick="$(this).popup({title:'修改状态',width:1000,height:700,url:'{{$__URL__}}/edit?acid={{$v.ac_id}}'});">修改</button>
+					<button class="more"></button>
+					<dl class="maction">
+						<dd onclick="mm.ajaxDelete({url:'{{$__URL__}}/del',kid:'{{$v.ac_id}}'},mm.confirm);">删除</dd>
+					</dl>
+				</div>
+			</td>
+		</tr>
+		{{/foreach}}
+		{{/if}}
+	</table>
+</div>
+<div class="a_detailbar"></div>
+<script>
+(function($,mm){
+	mm.confirm=function(){
+		return confirm("您确定要删除城市吗，会把该城市对应的新闻也删除？");
+	}
+})($, mm);
+</script>
+

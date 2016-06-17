@@ -1,0 +1,37 @@
+<form class="a_fill" method="post" action="{{$__URL__}}/edit" name="add_form"  onsubmit="mm.ajaxPost({formId: this}, mm.check);">
+	<input name="news_cate_id" type="hidden"  value="{{$info.news_cate_id}}"/>
+	<div class="fitem">
+		<div class="ftitle">分类名称<span class="bi">*</span></div>
+		<input  id="news_cate_title" name="news_cate_title" type="text" class="text" size="30" value="{{$info.news_cate_title}}"/>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">分类描述</div>
+		<input  id="news_cate_desc" name="news_cate_desc" type="text" class="text" size="30" value="{{$info.news_cate_desc}}"/>
+	</div>
+	
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">分类排序</div>
+		<input  id="news_cate_order" name="news_cate_order" type="text" class="text" size="30" value="{{$info.news_cate_order}}"/>
+	</div>
+	<!-- <div class="fitem">
+		<div class="ftitle">是否显示</div>
+		<div class="ku_fix">
+			<label><input name="is_show" type="radio" value="0" {{if $info.is_show==0}} checked {{/if}}/><span>隐藏</span></label>
+			<label><input name="is_show" type="radio" value="1" {{if $info.is_show==1}} checked {{/if}}/><span>显示</span></label>
+		</div>
+	</div> -->
+	<div class="fsub">
+		<button type="submit">保存</button>
+	</div>
+</form>
+<script type="text/javascript">
+(function($, mm) {
+	mm.check = function() {
+		var news_cate_title=$("#news_cate_title").val();
+		if($.trim(news_cate_title)==''){
+			tooltip.tip('error', "分类名称不能为空！");
+			return false;
+		}
+	}
+})($, mm);
+</script>

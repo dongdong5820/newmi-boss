@@ -1,0 +1,138 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action">
+		<span class="export" onclick="excel_export();"></span>
+		<span class="line"></span>
+		<!-- <span class="del" onclick="mm.ajaxDelete({url:'news/del'},mm.confirm_del);"></span>  -->
+	</div>
+	<div class="ku_cell fillter">
+		<form class="ssearch" action="applywifi" id="applywifi_search_form" name="applywifi_search_form"  onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<input class="text" type="text" name="s_n_name" value="{{$lss.s_n_name}}"  placeholder="请输入门店名称、申请人姓名进行筛选" / >
+			<em class="more">▼</em>
+			<button type="submit"  id="s_subbtn">筛选</button>
+		</form>
+		<form class="drop_down" action="applywifi" name="cond_search_form" id="cond_search_form" onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<dl>
+                <dd>
+                    <h2>申请人姓名：</h2>
+                    <input class="text" type="text" name="apply_username"  value="{{$lss.apply_username}}"/>
+               </dd>
+                <dd>
+                    <h2>手机：</h2>
+                    <input name="apply_phone" value="{{$lss.apply_phone}}">
+                </dd>
+                <dd>
+                    <h2>门店名称：</h2>
+                    <input name="apply_store_name" value="{{$lss.apply_store_name}}">
+                </dd>
+                <dd>
+                   	<span>所在地：</span>
+					<select name="province" onchange="cityAjax(this.value)">
+						<option value="0" {{if $lss.province==0 }} selected="selected" {{/if}} >省份</option>
+						{{if $plist}}
+						{{foreach from=$plist item=pl}}					
+						<option value="{{$pl.id}}" {{if $lss.province==$pl.id }} selected {{/if}} >{{$pl.city_name}}</option>
+						{{/foreach}}
+						{{/if}}					
+					</select>&nbsp;&nbsp;&nbsp;
+					<select name="s_city" id="s_city" onchange="scity(this.value);">
+						<option value="0" selected="selected">城市</option>
+						{{if $city_list}}
+						{{foreach from=$city_list item=cl}}
+						<option value="{{$cl.id}}" {{if $lss.s_city==$cl.id }} selected {{/if}} >{{$cl.city_name}}</option>
+						{{/foreach}}
+						{{/if}}
+					</select>
+					 
+                </dd>                
+		        <dd>
+		        	<h2 id="the_time">申请日期</h2>
+		        	<input name="s_time_start" id="s_time_start" value="{{$lss.s_time_start}}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" type="text" class="text" />
+		        </dd>
+		        <dd>
+		        	<h2>至</h2>
+		        	<input name="s_time_end" id="s_time_end" value="{{$lss.s_time_end}}" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})" onblur="timeEnd(this.value);" type="text" class="text" />
+                </dd>
+                <dt>
+                    <button type="submit" id="s_subbtn">筛选</button>
+	    		    <button type="button" class="showall">清除</button>
+                </dt>
+            </dl>
+		</form>
+	</div>
+</div>
+<div class="a_thbar" style="right: 251px;">
+	<table>
+		<tr>
+			<th width="108">申请人姓名</th>
+			<th width="188">门店名称</th>
+			<th width="118">手机</th>			
+			<th width="156">行业</th>
+			<th>所在地</th>
+			<th width="116">运营商</th>
+			<th  width="96">宽带</th>
+			<th width="106">来源</th>
+			<th width="138">申请日期</th>
+		</tr>
+	</table>
+</div>
+<div class="a_content" style="margin-right: 251px;">
+	<table class="b_table">
+		{{if $list}}
+		{{foreach from=$list item=v}}
+		<tr kid="{{$v.apply_id}}" origin="{{$__ROOT__}}/applywifi/infos?apply_id={{$v.apply_id}}">
+			<td width="108">{{$v.apply_username}}</td>
+			<td width="188">{{$v.apply_store_name}}</td>
+			<td width="118">{{$v.apply_phone}}</td>			
+			<td width="156">{{$v.apply_industry}}</td>
+			<td>{{$v.sc_pname}}{{$v.sc_name}}{{$v.apply_address}}</td>
+			<td width="116">{{$v.apply_operators}}</td>
+			<td width="96">{{$v.apply_broadband}} M</td>			
+			<td width="106">{{$v.apply_source}}</td>
+			<td width="138">{{$v.apply_time|date_format:'%Y-%m-%d %H:%M:%S'}} </td>			
+		</tr>
+		{{/foreach}}
+		{{/if}}
+	</table>
+</div>
+<div class="a_detailbar"></div>
+<script>
+function excel_export(){
+	if(confirm('确定要导出数据吗？')){
+		var tn = document.getElementsByClassName('total')[0].innerText;
+  	  	if(/[^0123456789\.]/g.test(tn))tn=tn.replace(/[^0123456789\.]/g,'');
+  	  	
+  	  	var parms='s_n_name={{$lss.s_n_name}}&apply_username={{$lss.apply_username}}&apply_phone={{$lss.apply_phone}}&apply_store_name={{$lss.apply_store_name}}&s_city={{$lss.s_city}}&s_time_start={{$lss.s_time_start}}&s_time_end={{$lss.s_time_end}}';
+  	  	tn>10000 ? tooltip.tip('error', "请控制导出数据不超过10000条！") : location.href='{{$__ROOT__}}/applywifi/exceloutput?'+parms; 
+	}
+}
+function cityAjax(val){
+	$.ajax({
+		type : "GET",
+		url  : "applywifi/getCityAjax",
+		data : {"sc_pid":val},
+		dataType : "JSON",
+		success : function(obj){
+			$("#s_city").html(" ");
+			var str = "<option value='0' >城市</option>";
+			$.each(obj, function(i, item){
+				str += "<option value='"+item.id+"' >"+item.city_name+"</option>";
+			});			
+			$("#s_city").append(str);
+		}
+	});
+}
+/*function timeEnd(val){
+	if(val!=''){
+		var st = $("#s_time_start").val();
+		if(st==''){
+			tooltip.tip('error', "请选择开始时间！");
+			$("#onfocus").focus();
+			$("#s_time_end").val('');
+			return false;
+		}
+	}
+}*/
+</script>

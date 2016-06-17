@@ -1,0 +1,47 @@
+<div class="dcon">	
+	
+	<div class="ditem">
+		<span>图片描述：</span>
+		{{if $info.img_desc!=''}} {{$info.img_desc}} {{else}} 无 {{/if}}
+	</div>
+	
+	<div class="ditem">
+		<span>平台：</span>
+		{{if $info.web_type==1}}PC{{else}}手机{{/if}}
+	</div>
+	<div class="ditem">
+		<span>缩略图：</span>
+		<img style="max-width: 216px;" src="{{$info.background}}" alt="">
+	</div>
+	<div class="ditem">
+		<span>链接地址：</span>
+		<p>{{if $info.url1!=''}}{{$info.url1}}{{else}}无{{/if}}</p>
+		<p>{{$info.url2}}</p>
+	</div>
+	<div class="ditem">
+		<span>轮播序号：</span>
+		{{$info.img_order}}
+	</div>
+	<div class="ditem">
+		<span>状态：</span>
+		{{if $info.status==1}}有效{{else}}无效{{/if}}	
+	</div>
+	<hr/>
+	<p>	</p><p></p>
+	<div class="ditem">
+		<span>添加时间：</span>
+		{{$info.add_time|date_format:'%Y-%m-%d %H:%M:%S'}}
+	</div>
+	<div class="ditem">
+		<span>修改时间：</span>
+		{{$info.edit_time|date_format:'%Y-%m-%d %H:%M:%S'}}
+	</div>
+	<div class="ditem">
+		<span>添加人：</span>
+		{{$info.add_user}}
+	</div>
+	<div class="ditem">
+		<span>修改人：</span>
+		{{$info.edit_user}}
+	</div>
+</div>

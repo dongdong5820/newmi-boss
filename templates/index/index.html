@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>  
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<link rel="shortcut icon" href="{{$__PUBLIC__}}/images/favicon.ico" />
+<title>{{$title|default:"实例系统"}}</title>
+<link rel="stylesheet" href="{{$__PUBLIC__}}/css/base.css">
+<script src="{{$__PUBLIC__}}/js/jquery-1.8.3.min.js"></script>
+<script src="{{$__PUBLIC__}}/js/jquery.tooltip-1.0.1.js"></script>
+<script src="{{$__PUBLIC__}}/js/jquery.hash.js"></script>
+<script src="{{$__PUBLIC__}}/js/jquery.popup-1.0.2.js"></script>
+<script type="text/javascript" src="{{$__PUBLIC__}}/js/My97DatePicker/WdatePicker.js"></script>
+<link rel="stylesheet" href="plugins/KindEditor/themes/default/default.css"/>
+<script src="plugins/KindEditor/kindeditor.js"></script>
+<script src="plugins/KindEditor/lang/zh_CN.js"></script>
+<script type="text/javascript" src="{{$__PUBLIC__}}/js/dateRange.js"></script>	<!-- 选择时间段插件 -->
+<link rel="stylesheet" href="{{$__PUBLIC__}}/css/dateRange.css"/>
+<script>
+	(function() {
+		var path = window.path = window.path || {
+			ROOT: '{{$__APP__}}'
+		};
+	})();
+</script>
+<script src="{{$__PUBLIC__}}/js/index.js"></script>
+</head>
+<body>
+<div id="k-allTip" class="k-allTipBox" style="display:none;">
+	<span class="k-allTip"><img src="{{$__PUBLIC__}}/images/loading.gif" alt="数据加载中" class="va_m" style="padding-right:6px;" /><span id="k-allTip_txt"></span></span><i></i>
+</div>
+
+<div id="k-maincontent" name="k-maincontent">
+
+</div>
+</body>
+</html>

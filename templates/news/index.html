@@ -1,0 +1,109 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action">
+		<span class="add" onclick="$(this).popup({title:'添加文章',width:1000,height:700,url:'{{$__ROOT__}}/news/add'});"></span>
+		<span class="line"></span>
+		<span class="del" onclick="mm.ajaxDelete({url:'news/del'},mm.confirm_del);"></span>
+	</div>
+	<div class="ku_cell fillter">
+		<form class="ssearch" action="news/index" id="news_search_form"  onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<input class="text" type="text" name="s_n_name" value="{{$filter.s_n_name}}"  placeholder="请输入文章标题进行筛选" / >
+			<em class="more">▼</em>
+			<button type="submit"  id="s_subbtn">筛选</button>
+		</form>
+		<form class="drop_down" action="news/index" onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<dl>
+				<dd>
+					<h2>文章标题：</h2>
+					<input class="text" type="text" id="s_n_n" name="s_n_n" value="{{$filter.s_n_n}}"/>
+				</dd>
+				<dt>
+					<button type="submit" id="s_a_subbtn">筛选</button><button type="button" class="showall">清除</button>
+				</dt>
+			</dl>
+		</form>
+	</div>
+</div>
+<div class="a_thbar" style="right: 251px;">
+	<table>
+		<tr>
+			<th class="cboxlie"><span class="checkbox"></span></th>
+			<th>文章标题</th>
+			<th>分类名称</th>
+			<th>文章作者</th>
+			<th width="150">文章标签</th>
+			<th width="136">发表日期</th>
+			<th>点击量</th>
+			<!-- <th>置顶</th> -->
+			<th>是否显示</th>
+			<th>预览</th>
+			<th width="92">操作</th>
+		</tr>
+	</table>
+</div>
+<div class="a_content" style="margin-right: 251px;">
+	<table class="b_table">
+		{{if $news_list}}
+		{{foreach from=$news_list item=v}}
+		<tr kid="{{$v.news_id}}"  origin="{{$__ROOT__}}/news/infos?news_id={{$v.news_id}}">
+			<td class="cboxlie"><span class="checkbox"></span></td>
+			<td><a class="link" onclick="$(this).popup({title:'查看文章【{{$v.news_title}}】的详细信息',width:1000,height:700, url:'{{$__ROOT__}}/news/detail?news_id={{$v.news_id}}' });">{{$v.news_title}}</a></td>
+			<td>{{$v.news_cate_title}}</td>
+			<td>{{$v.news_author}}</td>
+			<td width="150">{{$v.news_tag}}</td>
+			<td width="136">{{$v.news_date|date_format:'%Y-%m-%d %H:%M:%S'}}</td>
+			<td>{{$v.clicks}}</td>
+			<!-- <td>{{if $v.top_time>1}}<span onclick="change({{$v.news_id}},2)"><font color="#FF0000" title="点击取消置顶，置顶时间：{{$v.top_time|date_format:'%Y-%m-%d %H:%M:%S'}} ">取消置顶</font></span>{{else}}<span onclick="change({{$v.news_id}},1)">点击置顶{{/if}}</span></td> -->
+			<td>{{if $v.is_display==1}}显示{{else}}隐藏{{/if}}</td>
+			<td><a href="{{$news_url}}detail?news_id={{$v.news_id}}" target='_blank'>查看</a></td>
+			<td width="92">
+				<div class="saction ku_fix">
+					<button onclick="$(this).popup({ title:'修改文章',width:1000,height:700, url:'{{$__ROOT__}}/news/edit?news_id={{$v.news_id}}' });">修改</button>
+					<button class="more"></button>
+					<dl class="maction">
+						<dd onclick="mm.ajaxDelete({url: 'news/del', kid: '{{$v.news_id}}'},mm.confirm_del);">删除</dd>
+					</dl>
+				</div>
+				
+			</td>
+		</tr>
+		{{/foreach}}
+		{{/if}}
+	</table>
+</div>
+<div class="a_detailbar"></div>
+<script type="text/javascript">
+(function($, mm) {
+	mm.confirm_del = function() {
+		if(confirm("您确定要删除所选的文章吗？")){
+			return true;
+		}
+		return false;
+	}
+	
+})($, mm);
+function change(a,b){
+	var tip;
+	if(b==1){tip="确定要置顶该文章吗？"}
+	if(b==2){tip="确定要取消置顶该文章吗？"}
+	if(tip==''){tooltip.tip("error", "参数有问题！");return false;}
+	if(confirm(tip)){
+		mm.ajax({
+			url: '{{$__ROOT__}}/news/changeDisplay',
+			dataType:'json',
+			type:'post', 
+			data: {id:a,f:b},
+			success:function(data){
+				tooltip.tip(data.status, data.msg);
+				if(data.isRefresh==1){
+					setTimeout(function(){location.reload();},500);
+				}
+				
+			}
+		})
+	}
+	return false;
+}
+</script>

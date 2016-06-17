@@ -1,0 +1,84 @@
+<form class="a_fill" method="post" action="{{$__URL__}}/edit" name="add_form" enctype="multipart/form-data"  onsubmit="mm.ajaxPost({formId: this}, mm.check);">
+<input type="hidden" name="job_id" value="{{$info.job_id}}">
+	<div class="fitem">
+		<div class="ftitle">职位名称<span class="bi">*</span></div>
+		<input  id="job_name" name="job_name" type="text" class="text" size="30" value="{{$info.job_name}}"/>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">职位分类<span class="bi">*</span></div>
+		<select id="job_type_id" name="job_type_id">
+			<option value=''>--请选择--</option>
+			{{if $type_list}} 
+			{{foreach from=$type_list item=v}}
+			<option value='{{$v.job_type_id}}' {{if $v.job_type_id eq $info.job_type_id}}selected{{/if}}>{{$v.job_type_name}}</option>
+			{{/foreach}}
+			{{/if}}
+		</select>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">职位描述<span class="bi">*</span></div>
+		<textarea  id="job_desc" name="job_desc" >{{$info.job_desc}}</textarea>
+	</div>
+	
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">投递邮箱<span class="bi">*</span></div>
+		<input  id="job_email" name="job_email" type="text" class="text" size="30" value="{{$info.job_email}}"/>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">是否热门</div>
+		<div class="ku_fix">
+			<label><input name="job_hot" type="radio" value="0" {{if $info.job_hot eq '0'}}checked{{/if}}/><span>普通</span></label>
+			<label><input name="job_hot" type="radio" value="1" {{if $info.job_hot eq '1'}}checked{{/if}}/><span>热门</span></label>
+		</div>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">显示排序<span class="bi">*</span></div>
+		<input  id="job_order" name="job_order" type="text" class="text" size="30" value="{{$info.job_order}}"/>
+	</div>	
+	<div class="fitem">
+		<div class="ftitle">是否状态</div>
+		<div class="ku_fix">
+			<label><input name="job_status" type="radio" value="1" {{if $info.job_status eq '1'}}checked{{/if}}/><span>显示</span></label>
+			<label><input name="job_status" type="radio" value="0" {{if $info.job_status eq '0'}}checked{{/if}}/><span>隐藏</span></label>
+            <label>（选择“隐藏”时，将不会显示在官网）</label>
+		</div>
+	</div>		
+
+	<div class="fsub">
+		<button type="submit">保存</button>
+	</div>
+</form>
+<script type="text/javascript">
+(function($, mm) {
+	mm.check = function() {
+		var job_name=$("#job_name").val();
+		if($.trim(job_name)==''){
+			tooltip.tip('error', "职位标题不能为空！");
+			return false;
+		}
+		var job_type_id=$("#job_type_id").val();
+		if(job_type_id==''){
+			tooltip.tip('error', "请选择职位分类！");
+			return false;
+		}
+		var job_email=$("#job_email").val();
+		if(job_email==''){
+			tooltip.tip('error', "请输入投递邮箱！");
+			return false;
+		}
+		var job_order=$("#job_order").val();
+		if(job_order==''){
+			tooltip.tip('error', "请输入显示排序！");
+			return false;
+		}		
+		var job_desc=editor_obj_job_desc.html();
+		$("#job_desc").val(job_desc);
+		var job_desc=$("#job_desc").val();
+		if(job_desc==''){
+			tooltip.tip('error', "请输入职位内容！");
+			return false;
+		}
+	}
+})($, mm);
+</script>
+{{$editor}}

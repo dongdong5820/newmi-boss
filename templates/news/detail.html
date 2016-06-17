@@ -1,0 +1,57 @@
+<div class="a_fill">
+	<div class="fitem">
+		<div class="ftitle">文章标题</div>
+		<div class="ftext">{{$info.news_title}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">文章作者</div>
+		<div class="ftext">{{$info.news_author}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">文章标签</div>
+		<div class="ftext">{{$info.news_tag}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">文章摘要</div>
+		<div class="ftext">{{$info.digest}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">发表日期</div>
+		<div class="ftext">{{$info.news_date|date_format:'%Y-%m-%d'}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">添加时间</div>
+		<div class="ftext">{{$info.news_addtime|date_format:'%Y-%m-%d %H:%M:%S'}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">修改时间</div>
+		<div class="ftext">{{$info.news_uptime|date_format:'%Y-%m-%d %H:%M:%S'}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">点击量</div>
+		<div class="ftext">{{$info.clicks}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">置顶时间</div>
+		<div class="ftext">{{if $info.top_time==''}}未置顶{{else}}{{$info.top_time|date_format:'%Y-%m-%d %H:%M:%S'}}{{/if}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">添加者</div>
+		<div class="ftext">{{$info.user_name}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">新闻预览</div>
+		<div class="ftext"><a href="{{$news_url}}detail?news_id={{$info.news_id}}" target='_blank'>{{$news_url}}detail?news_id={{$info.news_id}}</a></div>
+	</div>
+	<object >
+		<param NAME="movie" VALUE="{{$info.show_img}}">
+		<param NAME="quality" VALUE="High">
+		<embed src="{{$info.show_img}}"  width="400	" height="200" wmode="transparent">
+	</object>
+	<div class="fitem">
+		<div class="ftitle">广告描述</div>
+		<div class="ftext">{{$info.news_content}}</div>
+	</div>
+	<div class="fline"></div>
+</div>
+

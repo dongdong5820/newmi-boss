@@ -1,0 +1,222 @@
+<form class="a_fill" method="post" action="{{$__ROOT__}}/cityList/batchadd" onsubmit="mm.ajaxPost({formId: this}, mm.check);">
+    <div class="fitem ku_fix">
+        <div class="ftitle">城市名称<span class="bi">*</span></div>
+        <ul class="multiple ku_fix">
+            {{if $sc_name_list}}
+            {{foreach from=$sc_name_list item=snl}}
+            <li kid="{{$snl.sc_id}}"><span>{{$snl.sc_name}}</span><em>×</em></li>
+            {{/foreach}}
+            {{/if}}
+        </ul>
+        <input name="city" type="hidden" value="{{$city_id}}" />
+        <button id="select-city" type="button" style="width:120px;">选择城市</button>
+        <div class="allcity">
+            <div class="title ku_fix">
+                <h4>选择城市</h4>
+                <label kid='undefined'><input type="checkbox" id="select_all" style="margin-left:36px;"/>全国</label>
+                <span class="close">×</span>
+                
+            </div>
+            <div class="word ku_fix">
+                {{assign var="val" value="0"}}               
+                {{if $sndc}}                
+                {{foreach key=k from=$sndc item=cl }}
+                {{if $val==0}}
+                <span class="on" t="{{$val++}}">{{$k}}</span>
+                {{else}}
+                <span t="{{$val++}}">{{$k}}</span>
+                {{/if}}
+                <!-- {{if $val%5==0}}
+                <em></em/>
+                {{/if}} -->
+                {{/foreach}}
+                {{/if}}
+                <!-- <span class="on">A</span>
+                <span>B</span>
+                <span>C</span>
+                <span>D</span>
+                <span>E</span>
+                <em></em/>
+                <span>F</span>
+                <span>G</span>
+                <span>H</span>
+                <span>J</span>
+                <span>K</span>
+                <em></em/>
+                <span>L</span>
+                <span>M</span>
+                <span>N</span>
+                <span>Q</span>
+                <span>S</span>
+                <em></em/>
+                <span>T</span>
+                <span>W</span>
+                <span>X</span>
+                <span>Y</span>
+                <span>Z</span> -->
+            </div>
+            <ul>            	
+                {{assign var="i" value="0"}}  
+                {{if $sndc}}
+                {{foreach key=k from=$sndc item=cl}}
+                {{if $i==0}}
+                <li {{$i++}} class="ku_fix open">
+                {{else}}
+                <li {{$i++}} class="ku_fix">
+                {{/if}} 
+                {{foreach from=$cl item=ls}}
+                    <label kid="{{$ls.sc_id}}"><input type="checkbox" />{{$ls.sc_name}}</label>
+                {{/foreach}}
+                </li>                
+                {{/foreach}}
+                {{/if}}
+
+                <!-- <li class="ku_fix">
+                    <label kid="22"><input type="checkbox" />东莞</label>
+                    <label kid="3333"><input type="checkbox" />深圳</label>
+                </li>
+                <li class="ku_fix">
+                    <label kid="12"><input type="checkbox" />深圳</label>
+                    <label kid="123"><input type="checkbox" />东莞</label>
+                </li>
+                <li class="ku_fix">
+                    <label kid="1123"><input type="checkbox" />东莞</label>
+                    <label kid="11222"><input type="checkbox" />深圳</label>
+                </li>
+                <li class="ku_fix">
+                    <label kid="111"><input type="checkbox" />4</label>
+                    <label kid="111111"><input type="checkbox" />东莞</label>
+                </li>
+                <li></li>
+                <li class="ku_fix">
+                    <label kid="12312"><input type="checkbox" />5</label>
+                    <label kid="123213"><input type="checkbox" />深圳</label>
+                </li> -->
+            </ul>
+        </div>
+    </div>
+    <div class="fitem">
+        <div class="ftitle">跳转地址<span class="bi">*</span></div>
+        <select name="nav_id" style="width: 336px; overflow: hidden; white-space: nowrap;text-overflow: ellipsis;">
+            {{if $navList}}
+            {{foreach from=$navList item=nl}}
+            <option value="{{$nl.nav_id}}" title="{{$nl.nav_name}}--{{$nl.nav_url}}">{{$nl.nav_name}}--{{substr($nl.nav_url,0,28)}}</option>  
+            {{/foreach}}                                
+            {{/if}}
+        </select>
+    </div>    
+    <div class="fline"></div>
+    <div class="fsub">
+        <input type="hidden" name="kid" value="{{$kid}}" />
+        <input type="hidden" name="city_id" value="{{$city_id}}" />
+        <input type="hidden" name="area_code" value="{{$area_code}}" />
+        <button type="submit">保存</button>
+    </div>
+</form>
+
+<script type="text/javascript">
+(function($,mm){
+	mm.check = function() {
+		return true;
+	};
+
+    var allCity = $('input[name=city]');
+    $('.multiple').on('click', 'li em', function(e) {
+        var li = $(this).closest('li'),
+            kid = li.attr('kid');        
+        var newVal = (',' + allCity.val() + ',').replace(','+kid+',', ',').replace(/(^,)|(,$)/g, '');
+        li.remove();
+        allCity.val(newVal);
+        $('.allcity').find('label[kid='+kid+'] input').attr("checked",false);
+        /*$('.allcity').find('label[kid='+kid+']').remove();*/
+        
+    });
+
+    $("#select_all").click(function(){
+        var kid_str = '';
+        if($(this).attr("checked")=='checked'){
+            $("label[kid]").each(function(){
+                kid  = $(this).attr("kid");
+                if(kid!='undefined' && kid!='' && kid!=null){
+                    if(kid_str!='' && kid_str!='undefined'){
+                        kid_str=kid_str+","+kid;
+                    }else{
+                            kid_str = kid;
+                    }
+                    $(this).find("input").attr("checked",true);
+                    $('.multiple li[kid='+kid+']').remove();
+                }
+            });
+
+        }else{
+            $("label[kid]").each(function(){
+                kid  = $(this).attr("kid");
+                $(this).find("input").attr("checked",false);
+            });
+            kid_str = "";
+        }        
+        allCity.val(kid_str);           
+    });
+    
+    $('.word span').click(function(e) {
+        var idx = $(this).index();
+        $(this).addClass('on').siblings('.on').removeClass('on');
+        $(this).parent().next().find('li').eq(idx).addClass('open').siblings('.open').removeClass('open');
+    });
+
+    $('#select-city').click(function(e) {
+        $('.allcity').toggleClass('open');
+    });
+
+    $('.allcity').find('.close').click(function(e) {
+        $('.allcity').removeClass('open');
+    });
+
+    $('.allcity').find('label').click(function(e) {
+        var t = $(this),
+            kid = t.attr('kid'),
+            text = t.text();
+        var select_all = $("#select_all").attr("checked");        
+        if(t.children('input')[0].checked != true) {
+            if(select_all=='checked'){
+                $("label[kid]").each(function(){
+                    test_a = $(this).text();
+                    a_id  = $(this).attr("kid");
+                    $('<li kid="'+a_id+'"><span>'+test_a+'</span><em>×</em></li>').appendTo($('.multiple'));
+                    if(a_id==kid){
+                        all = "undefined";
+                        $('.multiple li[kid='+a_id+']').remove();
+                        $('.multiple li[kid='+undefined+']').remove();
+                        var newVal = (',' + allCity.val() + ',').replace(','+a_id+',', ',').replace(/(^,)|(,$)/g, '');                        
+                        arr = newVal.split(",");
+                        cityNewVal = '';
+                        for(i=0;i<arr.length;i++){
+                            if(arr[i]!='undefined'){
+                                cityNewVal = cityNewVal!='' ? cityNewVal+","+arr[i] : arr[i];
+                            }
+                        }
+                        allCity.val(cityNewVal);
+                    }                   
+                });
+                $("#select_all").attr("checked",false);                            
+            }else{
+                $('.multiple li[kid='+kid+']').remove();
+                var newVal = (',' + allCity.val() + ',').replace(','+kid+',', ',').replace(/(^,)|(,$)/g, '');
+                allCity.val(newVal);
+            }                
+        }else {
+            $('.multiple li[kid='+kid+']').remove();
+            allArr = allCity.val().split(',');
+            nval = '';
+            for(i=0; i<allArr.length; i++){
+                if(allArr[i]!='' && allArr[i]!=kid){
+                    nval = nval!='' ? nval+','+allArr[i] : allArr[i];
+                }
+            }            
+            $('<li kid="'+kid+'"><span>'+text+'</span><em>×</em></li>').appendTo($('.multiple'));
+            var newVal = nval + ',' + kid;
+            allCity.val(newVal);            
+        }       
+    });
+})($,mm);
+</script>

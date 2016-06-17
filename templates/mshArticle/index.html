@@ -1,0 +1,116 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action">
+		<span class="del" onclick="mm.ajaxDelete({url:'{{$__URL__}}/del'},mm.confirm);"></span>
+	</div>
+	<div class="ku_cell fillter">
+        <form class="ssearch" action="mshArticle" onsubmit="mm.ajaxFilter({formId: this});return false;">
+            <input class="text" type="text" name="s_search_key" value="{{$s_search_key}}"  placeholder="请输入新闻标题进行搜索" / >
+            <em class="more">▼</em>
+	        <button type="submit">搜索</button>
+		</form>
+        <div class="drop_down">
+            <form action="mshArticle" onsubmit="mm.ajaxFilter({formId:this});return false;">
+                <dl>
+                    <dd>
+                        <span>栏目：</span>
+						<select name="s_at">
+							<option value="">全部</option>
+							{{foreach from=$ats key=k item=v}}
+							<option value="{{$k}}"{{if $s_at===$k}}selected="selected"{{/if}}>{{$v}}</option>
+							{{/foreach}}
+						</select>
+                    </dd>
+                    <dd>
+                        <span>城市：</span>
+						<select name="s_city">
+							<option value="">全部</option>
+							{{foreach from=$cities key=k item=v}}
+							<option value="{{$k}}"{{if $s_city===$k}}selected="selected"{{/if}}>{{$v}}</option>
+							{{/foreach}}
+						</select>
+                    </dd>
+                    <dd>
+                        <span>推荐：</span>
+						{{html_checkboxes name="s_recm" checked=$s_recm options=$recms separator="&nbsp;"}}
+                    </dd>
+                    <dd>
+                        <span>首页推荐：</span>
+						<label><input type="radio" name="hotOffers" value="1" {{if $hotOffers==1}} checked="checked"{{/if}}>&nbsp;大图推荐   &nbsp; </label> &nbsp;
+						<label><input type="radio" name="hotOffers" value="2" {{if $hotOffers==2}} checked="checked"{{/if}}>&nbsp;热门推荐   &nbsp; </label> &nbsp;
+						<label><input type="radio" name="hotOffers" value="0" {{if $hotOffers=="0"}} checked="checked"{{/if}}>&nbsp; 不推荐推荐   &nbsp; </label>
+                    </dd>
+                    <dd>
+                        <span>状态：</span>
+						<select name="s_status">
+							<option value="">全部</option>
+							<option value="0"{{if $s_status=='0'}}selected="selected"{{/if}}>无效</option>
+							<option value="1"{{if $s_status=='1'}}selected="selected"{{/if}}>有效</option>
+							<option value="2"{{if $s_status=='2'}}selected="selected"{{/if}}>删除</option>
+						</select>
+                    </dd>
+                    <dt>
+                    	<button type="submit">搜索</button>
+        				<button type="button" class="showall">清除</button>
+                    </dt>
+                </dl>
+            </form>
+        </div>
+	</div>
+</div>
+<div class="a_thbar right">
+	<table>
+		<tr>
+			<th class="cboxlie"><span class="checkbox"></span></th>
+			<th>栏目</th>
+			<th>城市</th>
+			<th>新闻标题</th>
+			<th>配图</th>
+			<th>访问次数</th>
+			<th>推荐</th>
+			<th>状态</th>
+			<th>预览</th>
+			<th>发布时间</th>
+			<th width="92">操作</th>
+		</tr>
+	</table>
+</div>
+<div class="a_content right">
+	<table class="b_table">
+		{{if $list}}
+		{{foreach from=$list item=v}}
+		<tr kid="{{$v.a_id}}">
+			<td class="cboxlie"><span class="checkbox"></span></td>
+			<td>{{$v.tname}}</td>
+			<td>{{$v.city}}</td>
+			<td>{{if $v.aIsDown neq 3}}
+				<a href="javascript:$(this).popup({title:'查看详情',width:1000,height:700,url:'{{$__URL__}}/detail?aid={{$v.a_id}}&atCode={{$v.atCode}}' });">
+				{{/if}}{{$v.aTitle}}{{if $v.aIsDown neq 3}}</a>{{/if}}
+			</td>
+			<td>{{if $v.img}}<img src="{{$v.img}}" height="40">{{/if}}</td>
+			<td>{{$v.aMSHReadCount}}</td>
+			<td>{{if $v.recm}} {{$v.recm}} , {{/if}}  {{if $v.hotOffers==1}} 首页大图推荐  {{else if $v.hotOffers==2}} 首页推荐 {{else}} 首页不推荐  {{/if}}</td>
+			<td>{{$v.status}}</td>
+			<td><a href="{{$news_url}}article{{if $v.at_id==0}}/{{$v.sc_id}}{{/if}}/{{$v.a_id}}.html" target='_blank'>查看</a></td>
+			<td>{{$v.aPublishTime|date_format:'%Y-%m-%d %H:%M:%S'}}</td>
+			<td width="92">
+				<div class="saction ku_fix">
+				{{if $v.aIsDown neq 3 and $v.aStatus neq 2}}
+					<button onclick="$(this).popup({title:'修改新闻',width:1000,height:700,url:'{{$__URL__}}/edit?aid={{$v.a_id}}&atCode={{$v.atCode}}'});">修改</button>
+				{{else}}
+					<button class="disabled" disabled="disabled">修改</button>
+				{{/if}}
+				<button class="more"></button>
+				<dl class="maction">
+					<dd onclick="mm.ajaxDelete({url:'{{$__URL__}}/del',kid:'{{$v.a_id}}'},mm.confirm);">删除</dd>
+				</dl>
+				</div>
+			</td>
+		</tr>
+		{{/foreach}}
+		{{/if}}
+	</table>
+</div>
+<div class="a_detailbar"></div>

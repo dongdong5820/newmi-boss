@@ -1,0 +1,15 @@
+<div class="a_fill">
+	<div class="fitem">
+		<div class="ftitle">标题</div>
+		<div class="ftext">{{$info.aTitle}}</div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">新闻预览</div>
+		<div class="ftext"><a href="{{$news_url}}article{{if $info.at_id==0}}/{{$info.sc_id}}{{/if}}/{{$info.a_id}}.html" target='_blank'>{{$news_url}}article{{if $info.at_id==0}}/{{$info.sc_id}}{{/if}}/{{$info.a_id}}.html</a></div>
+	</div>
+	<div class="fitem">
+		<div class="ftitle">内容</div>
+		<div class="ftext">{{$info.aContent}}</div>
+	</div>
+	<div class="fline"></div>
+</div>

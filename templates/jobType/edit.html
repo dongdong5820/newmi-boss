@@ -1,0 +1,30 @@
+<form class="a_fill" method="post" action="{{$__URL__}}/edit" name="add_form"  onsubmit="mm.ajaxPost({formId: this}, mm.check);">
+	<input name="job_type_id" type="hidden"  value="{{$info.job_type_id}}"/>
+	<div class="fitem">
+		<div class="ftitle">分类名称<span class="bi">*</span></div>
+		<input  id="job_type_name" name="job_type_name" type="text" class="text" size="30" value="{{$info.job_type_name}}"/>
+	</div>
+	<div class="fitem" linkage='true'>
+		<div class="ftitle">分类排序<span class="bi">*</span></div>
+		<input  id="job_type_order" name="job_type_order" type="text" class="text" size="30" value="{{$info.job_type_order}}"/>
+	</div>
+	<div class="fsub">
+		<button type="submit">保存</button>
+	</div>
+</form>
+<script type="text/javascript">
+(function($, mm) {
+	mm.check = function() {
+		var job_type_name=$("#job_type_name").val();
+		var job_type_order=$("#job_type_order").val();
+		if($.trim(job_type_name)==''){
+			tooltip.tip('error', "分类名称不能为空！");
+			return false;
+		}
+		if($.trim(job_type_order)==''){
+			tooltip.tip('error', "显示排序不能为空！");
+			return false;
+		}
+	}
+})($, mm);
+</script>

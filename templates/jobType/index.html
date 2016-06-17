@@ -1,0 +1,81 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action">
+		<span class="add" onclick="$(this).popup({title:'添加职位分类',width:1000,height:700,url:'{{$__ROOT__}}/jobType/add' });"></span>
+		<span class="line"></span>
+		<span class="del" onclick="mm.ajaxDelete({url: 'jobType/del'},mm.confirm_del);"></span>
+	</div>
+	<div class="ku_cell fillter">
+		<form class="ssearch" action="jobType/index" id="jobType_search_form"  onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<input class="text" type="text" name="s_job_type_name" value="{{$filter.s_job_type_name}}"  placeholder="请输入分类名称进行筛选" / >
+			<em class="more">▼</em>
+			<button type="submit"  id="s_subbtn">筛选</button>
+		</form>
+		<form class="drop_down" action="jobType/index" onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<dl>
+				<dd>
+					<h2>分类名称：</h2>
+					<input class="text" type="text" id="s_job_type_name" name="s_job_type_name" value="{{$filter.s_job_type_name}}"/>
+				</dd>
+				<!-- <dd>
+					<h2>显示状态：</h2>
+					<select id="s_n_i_s" name="s_n_i_s" > 
+						<option value="">全部</option>
+						<option value="0" {{if $filter.s_n_i_s=="0"}}selected{{/if}}>隐藏</option>
+						<option value="1" {{if $filter.s_n_i_s=="1"}}selected{{/if}}>显示</option>
+					</select>
+				</dd> -->
+				<dt>
+					<button type="submit" id="s_a_subbtn">筛选</button><button type="button" class="showall">清除</button>
+				</dt>
+			</dl>
+		</form>
+	</div>
+</div>
+<div class="a_thbar" style="right: 251px;">
+	<table>
+		<tr>
+			<th class="cboxlie"><span class="checkbox"></span></th>
+			<th>分类名称</th>
+			<th>显示排序</th>
+			<th width="92">操作</th>
+		</tr>
+	</table>
+</div>
+<div class="a_content" style="margin-right: 251px;">
+	<table class="b_table">
+		{{if $jobType_list}}
+		{{foreach from=$jobType_list item=v}}
+		<tr kid="{{$v.job_type_id}}">
+			<td class="cboxlie"><span class="checkbox"></span></td>
+			<td>{{$v.job_type_name}}</td>
+			<td>{{$v.job_type_order}}</td>
+			<td width="92">
+				<div class="saction ku_fix">
+					<button onclick="$(this).popup({ title:'修改职位分类',width:1000,height:700, url:'{{$__ROOT__}}/jobType/edit?job_type_id={{$v.job_type_id}}' });">修改</button>
+					<button class="more"></button>
+					<dl class="maction">
+						<dd onclick="mm.ajaxDelete({url: 'jobType/del', kid: '{{$v.job_type_id}}'},mm.confirm_del);">删除</dd>
+					</dl>
+				</div>
+				
+			</td>
+		</tr>
+		{{/foreach}}
+		{{/if}}
+	</table>
+</div>
+<div class="a_detailbar"></div>
+<script type="text/javascript">
+
+(function($, mm) {
+	mm.confirm_del = function() {
+		if(confirm("您确定要删除所选的分类吗？")){
+			return true;
+		}
+		return false;
+	}
+})($, mm);
+</script>

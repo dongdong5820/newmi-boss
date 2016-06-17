@@ -1,0 +1,34 @@
+<form class="a_fill" method="post" action="{{$__URL__}}/edit" onsubmit="mm.ajaxPost({formId:this},mm.check);">
+	<div class="fitem">
+		<div class="ftitle">城市<span class="bi">*</span></div>
+		<div class="ftext">{{$info.city}}</div>
+	</div>
+	<!--
+    <div class="fitem">
+		<div class="ftitle">城市名<span class="bi">*</span></div>
+		<input type="text" name="cname" value="{{$info.acName}}">
+		<div class="fsay">城市名不要带“市”，否则无法请求数据！</div>
+	</div>
+	-->
+    <div class="fitem">
+		<div class="ftitle">是否省会<span class="bi">*</span></div>
+		<label><input type="radio" name="isCaptal" value="1"{{if $info.acIsCapital}} checked="checked"{{/if}}>&nbsp;是</label>&nbsp;&nbsp;
+		<label><input type="radio" name="isCaptal" value="0"{{if !$info.acIsCapital}} checked="checked"{{/if}}>&nbsp;否</label>
+	</div>
+    <div class="fitem">
+		<div class="ftitle">状态<span class="bi">*</span></div>
+		<label><input type="radio" name="status" value="1"{{if $info.acStatus}} checked="checked"{{/if}}>&nbsp;有效</label>&nbsp;&nbsp;
+		<label><input type="radio" name="status" value="0"{{if !$info.acStatus}} checked="checked"{{/if}}>&nbsp;无效</label>
+	</div>
+    <div class="fline"></div>
+	<div class="fsub">
+		<input name="acid" type="hidden" value="{{$info.ac_id}}"/>
+		<button type="submit">保存</button>
+	</div>
+</form>
+<script type="text/javascript">
+(function($,mm){
+    mm.check=function(){
+    };
+})($,mm);
+</script>

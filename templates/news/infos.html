@@ -1,0 +1,52 @@
+<div class="dcon">	
+	<div style="margin: 0 0 10px 10px; width: 94px; height: 94px; padding: 3px; background: #fff; border: 1px solid #c3c3c3;">
+		<div style=" background: #f3f3f3; height: 94px; width: 94px;">
+			<object >
+				  <param NAME="movie" VALUE="{{$info.show_img}}">
+				  <param NAME="quality" VALUE="High">
+				  <embed src="{{$info.show_img}}" width="94" height="94" wmode="transparent">
+			</object>
+		</div>
+	</div>
+	<div class="ditem">
+		<span>文章标题：</span>
+		{{$info.news_title}}
+	</div>
+	<div class="ditem">
+		<span>文章作者：</span>
+		{{$info.news_author}}
+	</div>
+	<div class="ditem">
+		<span>文章标签：</span>
+		{{$info.news_tag}}
+	</div>
+	<div class="ditem">
+		<span>文章摘要：</span>
+		{{$info.digest}}
+	</div>
+	<div class="ditem">
+		<span>发表日期：</span>
+		{{$info.news_date|date_format:'%Y-%m-%d %H:%M:%S'}}
+	</div>
+	<div class="ditem">
+		<span>添加时间：</span>
+		{{$info.news_addtime|date_format:'%Y-%m-%d %H:%M:%S'}}	
+	</div>
+	<div class="ditem">
+		<span>修改时间：</span>
+		{{$info.news_uptime|date_format:'%Y-%m-%d %H:%M:%S'}}
+	</div>
+	<div class="ditem">
+		<span>点击量：</span>
+		{{$info.clicks}}
+	</div>
+	<div class="ditem">
+		<span>置顶时间：</span>
+		{{if $info.top_time==''}}未置顶{{else}}{{$info.top_time|date_format:'%Y-%m-%d %H:%M:%S'}}{{/if}}
+	</div>
+	<div class="ditem">
+		<span>添加者：</span>
+		{{$info.user_name}}
+	</div>
+	
+</div>

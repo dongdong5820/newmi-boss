@@ -1,0 +1,26 @@
+<form class="a_fill" method="post" action="{{$__ROOT__}}/logcate/add" onsubmit="mm.ajaxPost({formId: this}, mm.check);">
+	<div class="fitem">
+		<div class="ftitle">分类名称<span class="bi">*</span></div>
+		<input type="text" class="text" name="cate_name" autocomplete="off" />
+	</div>
+	<div class="fitem">
+		<div class="ftitle">分类编号<span class="bi">*</span></div>
+		<input type="text" class="text" name="cate_no" autocomplete="off" />
+	</div>
+	<div class="fitem">
+		<div class="ftitle">分类说明</div>
+		<textarea cols="40" rows="5" name="cate_desc"></textarea>
+	</div>     
+	<div class="fline"></div>                  
+	<div class="fsub">
+		<button type="submit">保存</button>
+	</div> 
+</form>
+	
+<script>
+	(function($, mm) {
+		mm.check = function() {
+			return true;
+		}
+	})($, mm);
+</script>

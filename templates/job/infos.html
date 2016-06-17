@@ -1,0 +1,40 @@
+<div class="dcon">	
+	<div class="ditem">
+		<span>职位名称：</span>
+		{{$info.job_name}}
+	</div>
+	<div class="ditem">
+		<span>职位分类：</span>
+		{{$info.job_type_name}}
+	</div>
+	<div class="ditem">
+		<span>投递邮箱：</span>
+		{{$info.job_email}}
+	</div>
+	<div class="ditem">
+		<span>热门标记：</span>
+		{{if $info.job_hot eq '1'}}热门{{else}}普通{{/if}}
+	</div>
+	<div class="ditem">
+		<span>显示排序：</span>
+		{{$info.job_order}}
+	</div>
+	<div class="ditem">
+		<span>显示状态：</span>
+		{{if $info.job_status eq '1'}}显示{{else}}隐藏{{/if}}	
+	</div>
+	<div style="margin: 0px 0px 20px 10px;border-bottom:#A6ABAD 1px solid; width:200px;height:10px; overflow:hidden"></div>
+	<div class="ditem">
+		<span>添加时间：</span>
+		{{$info.job_crttime}}
+	</div>
+	<div class="ditem">
+		<span>修改时间：</span>
+		{{$info.job_uptime}}
+	</div>
+	<div class="ditem">
+		<span>添加人：</span>
+		{{$info.job_crtby_name}}
+	</div>
+	
+</div>

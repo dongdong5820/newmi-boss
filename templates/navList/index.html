@@ -1,0 +1,82 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action" style="border-rigin:0;">
+		<span class="add" onclick="$(this).popup({title:'添加导航',width:1000,height:700,url:'{{$__ROOT__}}/navList/add'});"></span>
+		<span class="line"></span>
+		<span class="del" onclick="mm.ajaxDelete({url: 'navList/del'},mm.confirm,1);"></span>
+		<span class="line"></span>
+		<button onclick="$(this).popup({title:'修改默认导航',width:1000,height:700,url:'{{$__ROOT__}}/navList/editdefault'});" style="display:block; width:96px; heigh=56px; padding:3px 0; color:#FFF; background: url(../images/header/logo.png) #f60 0 50% no-repeat; margin-left:100px; margin-top:8px; text-align:center">修改默认导航</button>
+	</div>
+	<div class="ku_cell fillter">
+		<form class="ssearch" action="navList" id="nav_search_form" name="nav_search_form"  onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<input class="text" type="text" name="s_n_name" value="{{$s_n_name}}"  placeholder="请输入导航名称/链接地址进行搜索" / >
+			<em class="more">▼</em>
+			<button type="submit"  id="s_subbtn">筛选</button>
+		</form>
+		<form class="drop_down" action="navList" name="navList_search_form" id="navList_search_form" onsubmit="mm.ajaxFilter({formId:this});return false;">
+			<dl>                
+                <dd>
+                   	<span>状态：</span>
+					<select name="nav_status" >
+						<option value="-1" {{if $nav_status==-1}} selected {{/if}} >全部</option>										
+						<option value="1" {{if $nav_status==1}} selected {{/if}} >有效</option>
+						<option value="0" {{if $nav_status==0}} selected {{/if}} >无效</option>									
+					</select>					 
+                </dd>
+                <dt>
+                    <button type="submit" id="s_subbtn">筛选</button>
+	    		    <button type="button" class="showall">清除</button>
+                </dt>
+            </dl>
+		</form>
+	</div>
+</div>
+<div class="a_thbar right">
+	<table>
+		<tr>
+			<th class="cboxlie"><span class="checkbox"></span></th>
+			<th width="268">导航名称</th>
+			<th>导航链接地址</th>
+			<th width="168">状态</th>
+			<th width="92">操作</th>
+		</tr>
+	</table>
+</div>
+<div class="a_content right">
+	<table class="b_table">
+		{{if $list}}
+		{{foreach from=$list item=v}}
+		<tr kid="{{$v.nav_id}}">
+			<td class="cboxlie"><span class="checkbox"></span></td>
+			<td width="268">{{$v.nav_name}}</td>
+			<td>{{$v.nav_url}}</td>
+			<td width="168">{{$v.nav_status}}</td>	
+			<td width="92">
+				<div class="saction ku_fix">
+					<button onclick="$(this).popup({ title:'修改导航',width:1000,height:700,url:'{{$__ROOT__}}/navList/edit?nav_id={{$v.nav_id}}' });">修改</button>
+					<button class="more"></button>
+					<dl class="maction">
+						<dd onclick="mm.ajaxDelete({url: 'navList/del', kid: '{{$v.nav_id}}'},mm.confirm);">删除</dd>
+					</dl>
+				</div>
+			</td>
+		</tr>
+		{{/foreach}}
+		{{else}}
+		 <tr><th align="center">暂无数据显示</th></tr>
+		{{/if}}
+
+	</table>
+</div>
+<div class="a_detailbar">
+	
+</div>
+<script>
+	(function($, mm) {
+		mm.confirm = function() {
+			return confirm("您确定要删除该导航跳转吗？");
+		}
+	})($, mm);
+</script>

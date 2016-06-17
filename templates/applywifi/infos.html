@@ -1,0 +1,38 @@
+<div class="dcon">	
+	<div class="ditem">
+		<span>申请人姓名：</span>
+		{{$info.apply_username}}
+	</div>
+	<div class="ditem">
+		<span>门店名称：</span>
+		{{$info.apply_store_name	}}
+	</div>
+	<div class="ditem">
+		<span>手机：</span>
+		{{$info.apply_phone}}
+	</div>
+	<div class="ditem">
+		<span>所在地：</span>
+		{{$info.sc_pname}}{{$info.sc_name}}{{$info.apply_address}}
+	</div>	
+	<div class="ditem">
+		<span>行业：</span>
+		{{$info.apply_industry}}
+	</div>
+	<div class="ditem">
+		<span>运营商：</span>
+		{{$info.apply_operators}} 
+	</div>
+	<div class="ditem">
+		<span>宽带：</span>
+		{{$info.apply_broadband}} M
+	</div>
+	<div class="ditem">
+		<span>来源：</span>
+		{{$info.apply_source}}
+	</div>
+	<div class="ditem">
+		<span>申请时间：</span>
+		{{$info.apply_time|date_format:'%Y-%m-%d %H:%M:%S'}}
+	</div>
+</div>

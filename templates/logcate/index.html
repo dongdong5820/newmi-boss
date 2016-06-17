@@ -1,0 +1,72 @@
+<div class="ku_fix a_page right">
+	{{$page_string}}
+</div>
+<div class="a_toolbar ku_fix">
+	<div class="action">
+		<span class="add" onclick="$(this).popup({title:'添加日志分类',width:1000,height:700,url:'{{$__ROOT__}}/logcate/add' });"></span>
+		<span class="line"></span>
+		<span class="del" onclick="mm.ajaxDelete({url: 'logcate/del'},mm.confirm);"></span>
+	</div>
+    <div class="ku_cell fillter">
+        <form class="ssearch" action="logcate" onsubmit="mm.ajaxFilter({formId: this});return false;">
+            <input class="text" type="text" name="s_search_key" value="{{$filter.s_search_key}}"  placeholder="请按分类名称，分类编号搜索" / >
+            <em class="more">▼</em>
+            <button type="submit">搜索</button>
+		</form>
+        <form class="drop_down" action="logcate" onsubmit="mm.ajaxFilter({formId: this});">
+            <dl>
+                <dd>
+                	<h2>分类名称：</h2>
+		            <input class="text" type="text" name="cate_name" value="{{$filter.cate_name}}" / >
+		       	</dd>
+		       	<dd>
+                    <h2>分类编号：</h2>
+                    <input class="text" type="text" name="cate_no" value="{{$filter.cate_no}}"/>
+                </dd>
+                <dt>
+                    <button type="submit">搜索</button><button type="button" class="showall">清除</button>
+                </dt>
+            </dl>
+        </form>
+    </div>
+</div>
+<div class="a_thbar right">
+	<div class="warning">说明：日志分类是日志系统基础数据，不正确的修改与删除，有可能导致日志保存失败或显示不正确</div>
+	<table>
+		<tr>
+			<th class="cboxlie"><span class="checkbox"></span></th>
+			<th>分类名称</th>
+			<th>分类编号</th>
+			<th>分类说明</th>
+			<th width="62">操作</th>
+		</tr>
+	</table>
+</div>
+<div class="a_content right">
+	<table class="b_table">
+		{{if $logcate_list}}
+		{{foreach from=$logcate_list item=v}}
+		<tr kid="{{$v.log_cate_id}}" origin="{{$__ROOT__}}/logcate/infos?log_cate_id={{$v.log_cate_id}}">
+			<td class="cboxlie"><span class="checkbox"></span></td>
+			<td>{{$v.cate_name}}</td>
+			<td>{{$v.cate_no}}</td>
+			<td>{{$v.cate_desc}}</td>
+			<td width="62">
+				<div class="saction ku_fix">
+					<button class="one" onclick="$(this).popup({title:'修改分类',width:1000,height:700,url:'{{$__ROOT__}}/logcate/edit?log_cate_id={{$v.log_cate_id}}' });">修改</button>
+				</div>
+			</td>
+		</tr>
+		{{/foreach}}
+		{{/if}}
+	</table>
+</div>
+<div class="a_detailbar"></div>
+<script type="text/javascript">
+(function($, mm) {
+	mm.confirm = function() {
+		return confirm("您确定要删除用户吗？");
+	}
+})($, mm);
+</script>
+
